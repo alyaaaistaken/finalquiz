@@ -1,238 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-A">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All-in-One Puzzles & Quizzes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #121212;
-            --bg-medium: #1e1e1e;
-            --bg-light: #2a2a2a;
-            --primary-accent: #64ffda; /* Teal */
-            --secondary-accent: #ff6e40; /* Orange */
-            --text-light: #e0e0e0;
-            --text-dark: #000;
-            --border-color: #333;
+            --text-dark: #333;
+            --text-light: #fff;
+            --border-color: #ddd;
             --correct-color: #28a745;
             --incorrect-color: #dc3545;
+            
+            --kahoot-red: #e74c3c;
+            --kahoot-blue: #3498db;
+            --kahoot-yellow: #f1c40f;
+            --kahoot-green: #2ecc71;
         }
 
         /* --- Base & Layout --- */
         body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
-            background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium));
+            background-color: #46178F;
+            background-image:
+                radial-gradient(at 20% 25%, hsla(212,80%,55%,1) 0px, transparent 50%),
+                radial-gradient(at 78% 18%, hsla(287,83%,50%,1) 0px, transparent 50%),
+                radial-gradient(at 49% 82%, hsla(190,70%,65%,1) 0px, transparent 50%),
+                radial-gradient(at 82% 82%, hsla(340,80%,65%,1) 0px, transparent 50%);
             color: var(--text-light);
             display: flex;
+            flex-direction: column;
             height: 100vh;
             overflow: hidden;
         }
 
-        #sidebar {
-            width: 250px;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid var(--border-color);
-            box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
         }
 
-        #sidebar h1 {
-            font-family: 'Press Start 2P', cursive;
-            color: var(--primary-accent);
-            font-size: 1.5em;
-            text-shadow: 2px 2px var(--secondary-accent);
-            margin-bottom: 40px;
-            text-align: center;
+        #top-nav {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            flex-shrink: 0;
         }
 
         .nav-btn {
-            background: var(--bg-medium);
+            background: transparent;
             color: var(--text-light);
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            text-align: left;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
-        }
-
-        .nav-btn:hover, .nav-btn.active {
-            background: var(--primary-accent);
-            color: var(--text-dark);
-            border-color: var(--primary-accent);
-            transform: translateX(5px);
-        }
-
-        main {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
-
-        .game-view {
-            display: none;
-        }
-
-        .game-view.active {
-            display: block;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            width: 100%;
-        }
-
-        .game-card {
-            background: rgba(30, 30, 30, 0.8);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
-            flex: 1;
-            min-width: 45%;
-            transition: transform 0.3s ease;
-        }
-
-        h2 {
-            color: var(--secondary-accent);
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 25px;
-            font-weight: 700;
-            border-bottom: 2px solid var(--primary-accent);
-            padding-bottom: 10px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        button {
-            background: linear-gradient(45deg, var(--primary-accent), #40c9ff);
-            color: var(--text-dark);
-            border: none;
-            padding: 10px 25px;
+            border: 2px solid rgba(255,255,255,0.5);
+            padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
             font-size: 1em;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin: 0 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: white;
+            color: #46178F;
+            border-color: white;
+            transform: translateY(-2px);
+        }
+
+        main {
+            flex: 1;
+            padding: 20px 40px;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .game-container {
+             width: 100%;
+             max-width: 1200px;
+        }
+
+        .game-view {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .game-view.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--text-light);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        button {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            background: white;
+            color: #46178F;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             margin-top: 15px;
         }
 
         button:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         button:disabled {
-            background: #555;
+            background: #aaa;
+            color: #666;
             cursor: not-allowed;
             opacity: 0.7;
         }
 
         canvas {
-            border: 2px solid var(--primary-accent);
-            background: var(--bg-medium);
+            border: 2px solid rgba(255,255,255,0.5);
+            background: rgba(0,0,0,0.2);
             border-radius: 10px;
         }
         
         /* --- Hangman & T/F Quiz Specifics --- */
-        #hangman-display { text-align: center; }
-        #guessesLeft { font-weight: bold; color: var(--secondary-accent); font-size: 1.3em; }
+        #hangman-view .container { display: flex; gap: 30px; align-items: flex-start; }
+        #hangman-display { flex: 1; text-align: center; }
+        #quiz-questions { flex: 1.5; max-height: 500px; overflow-y: auto; padding-right: 15px; }
+        #guessesLeft { font-weight: bold; color: var(--text-light); font-size: 1.3em; }
         #gameStatus { font-size: 1.2em; margin-top: 15px; font-weight: bold; height: 2em; }
-        #quiz-questions { width: 100%; max-height: 400px; overflow-y: auto; margin-top: 20px; padding-right: 10px; }
-        .question { margin-bottom: 15px; padding: 12px; border-radius: 8px; background-color: var(--bg-light); text-align: left; border-left: 5px solid transparent; }
-        .question.correct { border-left-color: var(--correct-color); }
-        .question.incorrect { border-left-color: var(--incorrect-color); }
+        .question { margin-bottom: 15px; padding: 15px; border-radius: 8px; background-color: rgba(0,0,0,0.2); text-align: left; border-left: 5px solid transparent; backdrop-filter: blur(5px); }
+        .question p { font-size: 1.1em; line-height: 1.5; margin: 0 0 10px 0; }
+        .question.correct { border-left-color: var(--kahoot-green); background-color: rgba(46, 204, 113, 0.2); }
+        .question.incorrect { border-left-color: var(--kahoot-red); background-color: rgba(231, 76, 60, 0.2); }
         .question div { margin-top: 10px; }
-        .question label { margin-right: 20px; cursor: pointer; }
+        .question label { margin-right: 20px; cursor: pointer; font-size: 1.1em; }
+        #hangman-view button { background: var(--kahoot-green); color: white; }
 
         /* --- Crossword Specifics --- */
         #crossword { display: flex; flex-direction: column; align-items: center; }
-        #crossword-main { display: flex; gap: 20px; width: 100%; }
-        #crossword-clues { flex: 1; max-height: 350px; overflow-y: auto; padding-right: 10px; }
-        #crossword-clues h3 { color: var(--primary-accent); }
+        #crossword-main { display: flex; gap: 30px; width: 100%; }
+        #crossword-clues { flex: 1; max-height: 400px; overflow-y: auto; padding-right: 15px; }
+        #crossword-clues h3 { color: var(--text-light); border-bottom: 1px solid; padding-bottom: 5px; }
         #crossword-clues ul { list-style: none; padding: 0; }
-        #crossword-clues li { margin-bottom: 8px; font-size: 0.9em; }
-        #crossword-clues li.completed { text-decoration: line-through; color: #888; }
+        #crossword-clues li { margin-bottom: 10px; font-size: 1em; line-height: 1.4; }
+        #crossword-clues li.completed { text-decoration: line-through; color: #bbb; }
         #crossword-grid-container { flex: 1; display: flex; justify-content: center; align-items: center; }
         #crossword-grid { display: grid; gap: 2px; }
-        .grid-cell { width: 35px; height: 35px; background-color: var(--bg-medium); border: 1px solid var(--border-color); color: var(--text-light); font-size: 1.2em; text-align: center; line-height: 35px; text-transform: uppercase; position: relative; }
-        .clue-number { position: absolute; top: 1px; left: 2px; font-size: 0.6em; color: var(--primary-accent); }
+        
+        /* === MODIFIED LINE === */
+        .grid-cell {
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border: 1px solid #bbb;
+            color: black; /* Changed from var(--text-dark) to black */
+            font-size: 1.2em;
+            font-weight: bold; /* Added bold for better visibility */
+            text-align: center;
+            line-height: 35px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .clue-number { position: absolute; top: 1px; left: 2px; font-size: 0.6em; color: #555; }
         .hidden-cell { background-color: transparent; border: none; }
-        #crossword-input-area { margin-top: 20px; text-align: center; }
-        #crossword-input-area input { padding: 8px; border-radius: 5px; border: 1px solid var(--border-color); background: var(--bg-medium); color: var(--text-light); margin: 0 5px; width: 50px; }
-        #crossword-input-area #answerInput { width: 150px; }
+        #crossword-input-area { margin-top: 25px; text-align: center; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 10px; }
+        #crossword-input-area input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; color: var(--text-dark); margin: 0 10px; width: 60px; font-size: 1.1em; font-weight: bold; }
+        #crossword-input-area #answerInput { width: 180px; }
         #crosswordStatus { margin-top: 15px; font-weight: bold; height: 1.5em; }
+        #crossword-view button { background: var(--kahoot-blue); color: white; }
 
         /* --- Kahoot Quiz Specifics --- */
-        #kahoot-view .game-card { min-width: 90%; text-align: center; }
-        #kahoot-start-screen h2 { font-family: 'Press Start 2P', cursive; font-size: 2em; border: none; }
+        #kahoot-start-screen { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 60vh; }
+        #kahoot-start-screen h2 { font-family: 'Montserrat', sans-serif; font-size: 3em; border: none; font-weight: 900; }
         #kahoot-quiz-screen { display: none; }
         #kahoot-results-screen { display: none; }
-        .kahoot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: bold; }
-        .timer-bar-container { width: 100%; background-color: var(--bg-light); border-radius: 9999px; height: 1rem; margin-bottom: 1.5rem; }
-        .timer-bar-inner { background-color: var(--text-light); height: 1rem; border-radius: 9999px; transition: width 1s linear; }
-        .kahoot-question-box { background-color: var(--text-light); color: var(--text-dark); padding: 2rem; border-radius: 0.5rem; margin-bottom: 1.5rem; min-height: 150px; display: flex; align-items: center; justify-content: center; }
-        .kahoot-question-text { font-size: 1.8rem; font-weight: bold; text-align: center; }
+        .kahoot-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: bold; font-size: 1.2rem; }
+        .timer-bar-container { width: 100%; background-color: rgba(0,0,0,0.2); border-radius: 9999px; height: 1.25rem; margin-bottom: 1.5rem; }
+        .timer-bar-inner { background-color: var(--text-light); height: 1.25rem; border-radius: 9999px; transition: width 1s linear; }
+        .kahoot-question-box { background-color: var(--text-light); color: var(--text-dark); padding: 2rem; border-radius: 0.5rem; margin-bottom: 1.5rem; min-height: 150px; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .kahoot-question-text { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 2rem; line-height: 1.4; text-align: center; border-bottom: none; margin-bottom: 0; padding-bottom: 0; color: black; }
         .kahoot-answers-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem; }
         @media (min-width: 768px) { .kahoot-answers-grid { grid-template-columns: repeat(2, 1fr); } }
-        .answer-btn { background-color: var(--bg-medium); border: 2px solid var(--border-color); padding: 1rem; border-radius: 0.5rem; display: flex; align-items: center; font-size: 1.1rem; font-weight: bold; color: var(--text-light); transition: all 0.2s ease-in-out; margin-top: 0; }
-        .answer-btn:hover { border-color: var(--primary-accent); }
-        .answer-btn .shape { width: 2.5rem; height: 2.5rem; flex-shrink: 0; margin-right: 1rem; background-color: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.375rem; }
-        .answer-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); animation: pulse-correct 1s; }
-        .answer-btn.incorrect { opacity: 0.5; animation: shake-incorrect 0.5s; }
+        .kahoot-answer-btn { 
+            padding: 1rem; border-radius: 0.5rem; display: flex; align-items: center; font-size: 1.2rem; font-weight: bold; color: var(--text-light); transition: all 0.2s ease-in-out; margin-top: 0; border: none;
+        }
+        .kahoot-answer-btn:hover:not(:disabled) { transform: translateY(-4px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+        .kahoot-answer-btn .shape { width: 2.5rem; height: 2.5rem; flex-shrink: 0; margin-right: 1rem; background-color: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; border-radius: 0.375rem; color: white; }
+        .kahoot-answer-btn[data-color="red"] { background: var(--kahoot-red); }
+        .kahoot-answer-btn[data-color="blue"] { background: var(--kahoot-blue); }
+        .kahoot-answer-btn[data-color="yellow"] { background: var(--kahoot-yellow); }
+        .kahoot-answer-btn[data-color="green"] { background: var(--kahoot-green); }
+
+        .kahoot-answer-btn.correct { animation: pulse-correct 1s; border: 4px solid white; }
+        .kahoot-answer-btn.incorrect { opacity: 0.5; animation: shake-incorrect 0.5s; }
+        .kahoot-answer-btn.faded { opacity: 0.5; }
+        #kahoot-next-btn { background-color: #333; color: white; }
+        #kahoot-play-again-btn, #kahoot-start-btn { background: var(--kahoot-green); color: white; font-size: 1.5rem; padding: 1rem 2rem; }
+        #kahoot-results-screen h2 { border: none; }
+        #kahoot-final-score { color: var(--kahoot-green); }
+
         @keyframes pulse-correct { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         @keyframes shake-incorrect { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
     </style>
 </head>
 <body>
 
-    <aside id="sidebar">
-        <h1>Puzzles &amp; Quizzes</h1>
+    <nav id="top-nav">
         <button class="nav-btn active" onclick="showView('hangman-view')">Hangman Quiz</button>
         <button class="nav-btn" onclick="showView('crossword-view')">Crossword Puzzle</button>
         <button class="nav-btn" onclick="showView('kahoot-view')">Multiple Choice</button>
-    </aside>
+    </nav>
 
     <main>
-        <!-- Hangman View -->
-        <div id="hangman-view" class="game-view active">
-             <div class="container">
+        <div class="game-container">
+            <div id="hangman-view" class="game-view active">
                 <div class="game-card">
                     <h2>Hangman: True or False Edition</h2>
-                    <div id="hangman-display">
-                        <canvas id="hangmanCanvas" width="250" height="280"></canvas>
-                        <p>Incorrect Answers Remaining: <span id="guessesLeft">6</span></p>
-                        <p id="gameStatus"></p>
+                    <div class="container">
+                        <div id="hangman-display">
+                            <canvas id="hangmanCanvas" width="300" height="350"></canvas>
+                            <p>Incorrect Answers Remaining: <span id="guessesLeft">6</span></p>
+                            <p id="gameStatus"></p>
+                            <button onclick="newHangmanGame()">New Game</button>
+                        </div>
+                        <div id="quiz-questions"></div>
                     </div>
-                    <div id="quiz-questions"></div>
-                    <button onclick="newHangmanGame()">New Game</button>
                 </div>
             </div>
-        </div>
 
-        <!-- Crossword View -->
-        <div id="crossword-view" class="game-view">
-            <div class="container">
+            <div id="crossword-view" class="game-view">
                 <div id="crossword" class="game-card">
                     <h2>Crossword Challenge</h2>
                     <div id="crossword-main">
@@ -247,7 +285,7 @@
                         </div>
                     </div>
                     <div id="crossword-input-area">
-                        <label for="clueInput">Clue #:</label>
+                        <label for="clueInput">Number #:</label>
                         <input type="number" id="clueInput" min="1">
                         <label for="answerInput">Answer:</label>
                         <input type="text" id="answerInput">
@@ -256,62 +294,58 @@
                     <p id="crosswordStatus"></p>
                 </div>
             </div>
-        </div>
 
-        <!-- Multiple Choice (Kahoot Style) View -->
-        <div id="kahoot-view" class="game-view">
-            <div class="container">
-                <div class="game-card">
-                    <!-- Start Screen -->
-                    <div id="kahoot-start-screen">
-                        <h2>Hardware & Behaviorism Challenge</h2>
-                        <p class="text-xl my-8">A 60-question quiz on computer components and AI paradigms.</p>
-                        <button id="kahoot-start-btn">Start Quiz</button>
+            <div id="kahoot-view" class="game-view">
+                 <div id="kahoot-start-screen" class="text-center">
+                    <h2 class="text-5xl md:text-7xl font-black mb-4 drop-shadow-lg">Hardware & Behaviorism Challenge</h2>
+                    <p class="text-xl md:text-2xl mb-8 text-gray-200">A 60-question quiz on computer components and AI paradigms.</p>
+                    <button id="kahoot-start-btn">Start Quiz</button>
+                </div>
+
+                <div id="kahoot-quiz-screen">
+                    <div class="kahoot-header">
+                        <div id="kahoot-question-counter">Question 1/60</div>
+                        <div id="kahoot-score">Score: 0</div>
                     </div>
-
-                    <!-- Quiz Screen -->
-                    <div id="kahoot-quiz-screen">
-                        <div class="kahoot-header">
-                            <div id="kahoot-question-counter">Question 1/60</div>
-                            <div id="kahoot-score">Score: 0</div>
-                        </div>
-                        <div class="timer-bar-container">
-                            <div id="kahoot-timer-bar" class="timer-bar-inner" style="width: 100%;"></div>
-                        </div>
-                        <div class="kahoot-question-box">
-                            <h2 id="kahoot-question-text" class="kahoot-question-text">Question text goes here...</h2>
-                        </div>
-                        <div class="kahoot-answers-grid">
-                            <button class="answer-btn">
-                                <div class="shape">▲</div>
-                                <span class="answer-text-0">Answer 1</span>
-                            </button>
-                            <button class="answer-btn">
-                                <div class="shape">◆</div>
-                                <span class="answer-text-1">Answer 2</span>
-                            </button>
-                            <button class="answer-btn">
-                                <div class="shape">●</div>
-                                <span class="answer-text-2">Answer 3</span>
-                            </button>
-                            <button class="answer-btn">
-                                <div class="shape">■</div>
-                                <span class="answer-text-3">Answer 4</span>
-                            </button>
-                        </div>
+                    <div class="timer-bar-container">
+                        <div id="kahoot-timer-bar" class="timer-bar-inner" style="width: 100%;"></div>
+                    </div>
+                    <div class="kahoot-question-box">
+                        <h2 id="kahoot-question-text" class="kahoot-question-text">Question text goes here...</h2>
+                    </div>
+                    <div class="kahoot-answers-grid">
+                        <button class="kahoot-answer-btn" data-color="red">
+                            <div class="shape">▲</div>
+                            <span class="answer-text-0">Answer 1</span>
+                        </button>
+                        <button class="kahoot-answer-btn" data-color="blue">
+                            <div class="shape">◆</div>
+                            <span class="answer-text-1">Answer 2</span>
+                        </button>
+                        <button class="kahoot-answer-btn" data-color="yellow">
+                            <div class="shape">●</div>
+                            <span class="answer-text-2">Answer 3</span>
+                        </button>
+                        <button class="kahoot-answer-btn" data-color="green">
+                            <div class="shape">■</div>
+                            <span class="answer-text-3">Answer 4</span>
+                        </button>
+                    </div>
+                    <div class="text-center mt-6">
                         <button id="kahoot-next-btn" style="display: none;">Next</button>
                     </div>
+                </div>
 
-                    <!-- Results Screen -->
-                    <div id="kahoot-results-screen" class="text-center">
-                         <h2>Quiz Complete!</h2>
-                        <div class="bg-white/10 rounded-lg shadow-2xl p-8 inline-block my-4">
-                            <p class="text-2xl font-bold">Your Final Score:</p>
-                            <p id="kahoot-final-score" class="text-7xl font-black my-4 text-green-500">0</p>
-                            <p id="kahoot-score-percentage" class="text-xl">You got 0/60 correct!</p>
-                        </div>
-                        <button id="kahoot-play-again-btn">Play Again</button>
-                    </div>
+                <div id="kahoot-results-screen" class="text-center">
+                     <h2 class="text-6xl font-black mb-4">Quiz Complete!</h2>
+                     <div class="bg-white/10 rounded-lg shadow-2xl p-8 inline-block my-4">
+                         <p class="text-3xl font-bold">Your Final Score:</p>
+                         <p id="kahoot-final-score" class="text-8xl font-black my-4">0</p>
+                         <p id="kahoot-score-percentage" class="text-2xl">You got 0/60 correct!</p>
+                     </div>
+                     <div>
+                         <button id="kahoot-play-again-btn">Play Again</button>
+                     </div>
                 </div>
             </div>
         </div>
@@ -325,13 +359,8 @@
         const gameViews = document.querySelectorAll('.game-view');
 
         function showView(viewId) {
-            gameViews.forEach(view => {
-                view.classList.remove('active');
-            });
-            navButtons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-
+            gameViews.forEach(view => view.classList.remove('active'));
+            navButtons.forEach(btn => btn.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
             document.querySelector(`.nav-btn[onclick="showView('${viewId}')"]`).classList.add('active');
         }
@@ -347,6 +376,14 @@
             setupKahoot();
         }
 
+        // --- Fisher-Yates Shuffle Algorithm ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         // --- Web Audio API for Sound Effects ---
         let audioContext;
         function playTone(isCorrect) {
@@ -358,15 +395,12 @@
                     return;
                 }
             }
-            if (audioContext.state === 'suspended') {
-                 audioContext.resume();
-            }
+            if (audioContext.state === 'suspended') audioContext.resume();
+            
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
-
             oscillator.type = 'triangle';
             gainNode.gain.setValueAtTime(0, audioContext.currentTime);
             gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
@@ -410,42 +444,45 @@
 
         function drawHangman(errors) {
             hangmanCtx.clearRect(0, 0, hangmanCanvas.width, hangmanCanvas.height);
-            hangmanCtx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-accent').trim();
+            hangmanCtx.strokeStyle = 'white';
             hangmanCtx.lineWidth = 3;
             hangmanCtx.beginPath();
-            hangmanCtx.moveTo(30, 270); hangmanCtx.lineTo(130, 270);
-            hangmanCtx.moveTo(80, 270); hangmanCtx.lineTo(80, 50);
-            hangmanCtx.lineTo(180, 50); hangmanCtx.lineTo(180, 80);
+            hangmanCtx.moveTo(50, 320); hangmanCtx.lineTo(250, 320);
+            hangmanCtx.moveTo(100, 320); hangmanCtx.lineTo(100, 50);
+            hangmanCtx.lineTo(200, 50); hangmanCtx.lineTo(200, 100);
             hangmanCtx.stroke();
             hangmanCtx.beginPath();
-            if (errors >= 1) hangmanCtx.arc(180, 105, 25, 0, Math.PI * 2);
-            if (errors >= 2) { hangmanCtx.moveTo(180, 130); hangmanCtx.lineTo(180, 200); }
-            if (errors >= 3) { hangmanCtx.moveTo(180, 150); hangmanCtx.lineTo(140, 180); }
-            if (errors >= 4) { hangmanCtx.moveTo(180, 150); hangmanCtx.lineTo(220, 180); }
-            if (errors >= 5) { hangmanCtx.moveTo(180, 200); hangmanCtx.lineTo(140, 240); }
-            if (errors >= 6) { hangmanCtx.moveTo(180, 200); hangmanCtx.lineTo(220, 240); }
+            if (errors >= 1) hangmanCtx.arc(200, 125, 25, 0, Math.PI * 2);
+            if (errors >= 2) { hangmanCtx.moveTo(200, 150); hangmanCtx.lineTo(200, 220); }
+            if (errors >= 3) { hangmanCtx.moveTo(200, 170); hangmanCtx.lineTo(160, 200); }
+            if (errors >= 4) { hangmanCtx.moveTo(200, 170); hangmanCtx.lineTo(240, 200); }
+            if (errors >= 5) { hangmanCtx.moveTo(200, 220); hangmanCtx.lineTo(160, 260); }
+            if (errors >= 6) { hangmanCtx.moveTo(200, 220); hangmanCtx.lineTo(240, 260); }
             hangmanCtx.stroke();
         }
         
         function populateHangmanQuiz() {
             hangmanQuizContainer.innerHTML = '';
-            hangmanQuizData.forEach((item, index) => {
+            const shuffledQuestions = [...hangmanQuizData];
+            shuffleArray(shuffledQuestions);
+            
+            shuffledQuestions.forEach((item, index) => {
                 const qDiv = document.createElement('div');
                 qDiv.className = 'question';
                 qDiv.id = `hq${index + 1}`;
-                qDiv.innerHTML = `<p>${index + 1}. ${item.question}</p><div><label><input type="radio" name="hq${index + 1}" value="true"> True</label><label><input type="radio" name="hq${index + 1}" value="false"> False</label><button onclick="checkHangmanAnswer(${index + 1}, '${item.answer}')">Submit</button></div>`;
+                qDiv.innerHTML = `<p>${index + 1}. ${item.question}</p><div><label><input type="radio" name="hq${index + 1}" value="true"> True</label><label><input type="radio" name="hq${index + 1}" value="false"> False</label><button onclick="checkHangmanAnswer(this, '${item.answer}')">Submit</button></div>`;
                 hangmanQuizContainer.appendChild(qDiv);
             });
         }
 
-        function checkHangmanAnswer(qNum, correctAnswer) {
-            const radios = document.getElementsByName(`hq${qNum}`);
+        function checkHangmanAnswer(button, correctAnswer) {
+            const qDiv = button.closest('.question');
+            const radios = qDiv.querySelectorAll('input[type="radio"]');
             let selectedAnswer;
             for (const radio of radios) if (radio.checked) selectedAnswer = radio.value;
             if (!selectedAnswer) return alert('Please select an answer.');
 
-            const qDiv = document.getElementById(`hq${qNum}`);
-            qDiv.querySelector('button').disabled = true;
+            button.disabled = true;
             radios.forEach(r => r.disabled = true);
             hangmanAnsweredQuestions++;
 
@@ -464,11 +501,9 @@
         function checkHangmanStatus() {
             if (hangmanGuessesLeft <= 0) {
                 hangmanGameStatusEl.textContent = 'Game Over! You Lost.';
-                hangmanGameStatusEl.style.color = 'var(--incorrect-color)';
                 disableAllHangmanButtons();
             } else if (hangmanAnsweredQuestions === hangmanTotalQuestions) {
                 hangmanGameStatusEl.textContent = 'Congratulations! You Win!';
-                hangmanGameStatusEl.style.color = 'var(--correct-color)';
                 disableAllHangmanButtons();
             }
         }
@@ -575,17 +610,15 @@
             
             if (!wordData) {
                 crosswordStatusEl.textContent = 'Invalid clue number.';
-                crosswordStatusEl.style.color = 'var(--incorrect-color)';
                 return;
             }
             
             if (answer === wordData.answer) {
                 crosswordStatusEl.textContent = 'Correct!';
-                crosswordStatusEl.style.color = 'var(--correct-color)';
                 
                 for (let i = 0; i < wordData.answer.length; i++) {
                     const r = wordData.dir === 'down' ? wordData.r + i : wordData.r;
-                    const c = wordData.dir === 'across' ? wordData.c + i : word.c;
+                    const c = wordData.dir === 'across' ? wordData.c + i : wordData.c;
                     const cell = document.getElementById(`cell-${r}-${c}`);
                     cell.innerHTML = (cell.querySelector('.clue-number')?.outerHTML || '') + wordData.answer[i];
                 }
@@ -601,7 +634,6 @@
 
             } else {
                 crosswordStatusEl.textContent = 'Incorrect. Try again.';
-                crosswordStatusEl.style.color = 'var(--incorrect-color)';
             }
         }
         
@@ -674,7 +706,7 @@
             { question: "The 'state' in reinforcement learning describes the agent's current...", answers: ["Emotional condition", "Physical location", "Set of rules", "Situation or configuration"], correct: 3 }
         ];
         
-        const kahootQuizData = [...kahootHardwareQuestions, ...kahootBehavioristQuestions];
+        let kahootQuizData = [];
 
         // Kahoot DOM Elements
         const kahootStartScreen = document.getElementById('kahoot-start-screen');
@@ -687,7 +719,7 @@
         const kahootScoreEl = document.getElementById('kahoot-score');
         const kahootTimerBar = document.getElementById('kahoot-timer-bar');
         const kahootQuestionTextEl = document.getElementById('kahoot-question-text');
-        const kahootAnswerButtons = document.querySelectorAll('#kahoot-quiz-screen .answer-btn');
+        const kahootAnswerButtons = document.querySelectorAll('#kahoot-quiz-screen .kahoot-answer-btn');
         const kahootFinalScoreEl = document.getElementById('kahoot-final-score');
         const kahootScorePercentageEl = document.getElementById('kahoot-score-percentage');
 
@@ -697,18 +729,21 @@
         let kahootCorrectCount = 0;
         let kahootTimer;
         let kahootTimeLeft = 20;
-        const kahootTotalQuestions = kahootQuizData.length;
+        const kahootTotalQuestions = 60;
 
         function setupKahoot() {
             kahootStartBtn.addEventListener('click', startKahootQuiz);
             kahootNextBtn.addEventListener('click', showNextKahootQuestion);
             kahootPlayAgainBtn.addEventListener('click', startKahootQuiz);
-            kahootAnswerButtons.forEach((button, index) => {
+            kahootAnswerButtons.forEach((button) => {
                 button.addEventListener('click', () => selectKahootAnswer(button));
             });
         }
         
         function startKahootQuiz() {
+            kahootQuizData = [...kahootHardwareQuestions, ...kahootBehavioristQuestions];
+            shuffleArray(kahootQuizData);
+            
             kahootStartScreen.style.display = 'none';
             kahootResultsScreen.style.display = 'none';
             kahootQuizScreen.style.display = 'block';
@@ -725,9 +760,15 @@
             kahootQuestionCounterEl.textContent = `Question ${kahootCurrentIndex + 1}/${kahootTotalQuestions}`;
             kahootQuestionTextEl.textContent = questionData.question;
             
-            // We are not shuffling answers in this version for simplicity, using fixed positions
-            questionData.answers.forEach((answer, index) => {
-                 kahootAnswerButtons[index].querySelector(`.answer-text-${index}`).textContent = answer;
+            const answerOptions = questionData.answers.map((answer, index) => ({ text: answer, originalIndex: index }));
+            shuffleArray(answerOptions);
+
+            const correctOriginalIndex = questionData.correct;
+            const correctNewIndex = answerOptions.findIndex(opt => opt.originalIndex === correctOriginalIndex);
+            
+            kahootAnswerButtons.forEach((button, index) => {
+                 button.querySelector(`.answer-text-${index}`).textContent = answerOptions[index].text;
+                 button.dataset.correct = (index === correctNewIndex);
             });
             
             startKahootTimer();
@@ -735,12 +776,10 @@
 
         function resetKahootState() {
             kahootNextBtn.style.display = 'none';
-            kahootAnswerButtons.forEach((button, index) => {
+            kahootAnswerButtons.forEach((button) => {
                 button.disabled = false;
-                button.classList.remove('correct', 'incorrect');
-                button.style.opacity = 1;
-                // Store the correct answer index on the button itself
-                button.dataset.correct = (index === kahootQuizData[kahootCurrentIndex].correct);
+                button.classList.remove('correct', 'incorrect', 'faded');
+                delete button.dataset.correct;
             });
             kahootTimeLeft = 20;
             kahootTimerBar.style.transition = 'none';
@@ -770,7 +809,7 @@
                 } else if (button === selectedButton) {
                     button.classList.add('incorrect');
                 } else {
-                    button.style.opacity = 0.5;
+                    button.classList.add('faded');
                 }
             });
             
